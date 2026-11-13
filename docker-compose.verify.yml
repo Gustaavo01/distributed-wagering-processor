@@ -1,0 +1,52 @@
+
+services:
+  postgres:
+    image: postgres:17-alpine
+    restart: unless-stopped
+
+    environment:
+      POSTGRES_USER: wagering_user
+      POSTGRES_PASSWORD: wagering_verify_only
+      POSTGRES_DB: wagering_db
+
+    ports:
+      - "127.0.0.1:5543:5432"
+
+    volumes:
+      - postgres_verify_data:/var/lib/postgresql/data
+
+    healthcheck:
+      test:
+        - CMD-SHELL
+        - pg_isready -U wagering_user -d wagering_db
+      interval: 5s
+      timeout: 5s
+      retries: 15
+      start_period: 5s
+
+  ministack:
+    image: ministackorg/ministack:latest
+    restart: unless-stopped
+
+    environment:
+      GATEWAY_PORT: "4566"
+      MINISTACK_REGION: us-east-1
+      SERVICES: sqs
+      LOG_LEVEL: WARN
+
+    ports:
+      - "127.0.0.1:5566:4566"
+
+    healthcheck:
+      test:
+        - CMD
+        - python
+        - -c
+        - "import urllib.request; urllib.request.urlopen('http://localhost:4566/_ministack/health')"
+      interval: 5s
+      timeout: 5s
+      retries: 15
+      start_period: 5s
+
+volumes:
+  postgres_verify_data:

@@ -1,0 +1,47 @@
+
+# Dependencias
+node_modules/
+
+# Compilacao
+dist/
+build/
+*.tsbuildinfo
+
+# Cobertura e testes
+coverage/
+.nyc_output/
+test-results/
+
+# Variaveis privadas
+.env
+.env.*
+!.env.example
+
+# Segredos e certificados
+*.pem
+*.p12
+*.pfx
+
+# Logs
+*.log
+logs/
+npm-debug.log*
+bun-debug.log*
+
+# Arquivos temporarios
+tmp/
+temp/
+*.tmp
+*.bak
+
+# Editores
+.vscode/
+.idea/
+
+# Sistema operacional
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Arquivos locais
+*.local
